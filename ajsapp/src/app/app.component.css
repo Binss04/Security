@@ -1,0 +1,68 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 12px;
+}
+
+.page-item {
+  margin: 0 6px; /* Slight spacing between buttons */
+}
+
+.page-link {
+  padding: 10px 18px; /* Enlarges buttons for better interaction */
+  color: #007bff;
+  border: 1px solid #007bff;
+  text-decoration: none;
+  background-color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for a raised button effect */
+}
+
+/* Rounded page number buttons */
+.page-item:not(:first-child):not(:last-child) .page-link {
+  border-radius: 25px; /* Fully round for page numbers */
+}
+
+.page-link:hover {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow on hover */
+  transform: translateY(-2px); /* Gives a slight lift on hover */
+}
+
+/* Active page button */
+.page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow for active button */
+}
+
+/* Disabled button */
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+/* Focus state */
+.page-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Specific styles for Previous and Next buttons (don't make them round) */
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+  border-radius: 5px; /* Slight rounding for consistency, but not fully round */
+  padding: 10px 14px; /* Keep rectangular style for these buttons */
+}
+
+.navbar-nav .nav-item .nav-link {
+  margin-left: 10px;
+  font-size: 16px;
+}

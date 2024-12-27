@@ -1,0 +1,316 @@
+<div class="container">
+  <div class="container mt-5">
+    <h1 class="text-center">Book Search</h1>
+
+    <div class="container mt-5">
+      <!-- Form tìm kiếm -->
+      <form class="w-100">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" [(ngModel)]="searchRequest.author" name="author"
+              placeholder="Enter author" aria-label="Enter author" />
+          </div>
+          <div class="col-md-4">
+            <label for="genre" class="form-label">Genre</label>
+            <input type="text" class="form-control" [(ngModel)]="searchRequest.genre" name="genre"
+              placeholder="Enter genre" aria-label="Enter genre" />
+          </div>
+          <div class="col-md-4">
+            <label for="language" class="form-label">Language</label>
+            <input type="text" class="form-control" [(ngModel)]="searchRequest.language" name="language"
+              placeholder="Enter language" aria-label="Enter language" />
+          </div>
+          <div class="col-md-4">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" [(ngModel)]="searchRequest.startDate" name="startDate"
+              aria-label="Start date" />
+          </div>
+          <div class="col-md-4">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" [(ngModel)]="searchRequest.endDate" name="endDate"
+              aria-label="End date" />
+          </div>
+          <div class="col-md-5">
+            
+            <button type="submit" *ngIf="search" class="btn btn-primary mt-3"  (click)="onSearchClick()">Search</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+
+    <!-- Modal for Adding New Book -->
+    <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addBookModalLabel">Thêm Sách Mới</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="addBook()" #bookForm="ngForm">
+              <div class="mb-3">
+                <label for="title" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="newBook.title" name="title"
+                  placeholder="Tiêu đề" required     pattern="^[a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỂỄỆỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]+$"
+                  #title="ngModel" />
+                  <div *ngIf="title.invalid && title.touched" class="text-danger">
+                    <div *ngIf="title.errors?.['required']">Tiêu đề không được bỏ trống</div>
+                    <div *ngIf="title.errors?.['pattern']">Tiêu đề không được chứa ký tự đặc biệt</div>
+                  </div>
+              </div>
+              <div class="mb-3">
+                <label for="author" class="form-label">Tác giả</label>
+                <input type="text" class="form-control" id="author" [(ngModel)]="newBook.author" name="author"
+                  placeholder="Tác giả" required     pattern="^[a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỂỄỆỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]+$"
+                  #author="ngModel" />
+                  <div *ngIf="author.invalid && author.touched" class="text-danger">
+                    <div *ngIf="author.errors?.['required']">Tác giả không được bỏ trống</div>
+                    <div *ngIf="author.errors?.['pattern']">Tác giả không được chứa ký tự đặc biệt</div>
+                  </div>
+              </div>
+              <!-- <div class="mb-3">
+                <label for="genre" class="form-label">Thể loại</label>
+                <input type="text" class="form-control" id="genre" [(ngModel)]="newBook.genre" name="genre"
+                  placeholder="Thể loại" required #genre="ngModel" />
+                <div *ngIf="genre.invalid && genre.touched" class="text-danger">
+                  Thể loại không được bỏ trống
+                </div>
+              </div> -->
+              <div class="mb-3">
+                <label for="genre" class="form-label">Thể loại</label>
+                <select class="form-control" id="genre" [(ngModel)]="newBook.genre" name="genre" required #genre="ngModel">
+                  <option value="">Chọn thể loại</option>
+                  <option value="Truyện Ngắn">Truyện Ngắn</option>
+                  <option value="Truyện Dài">Truyện Dài</option>
+                </select>
+                <div *ngIf="genre.invalid && genre.touched" class="text-danger">
+                  Thể loại không được bỏ trống
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="language" class="form-label">Ngôn ngữ</label>
+                <select class="form-control" id="language" [(ngModel)]="newBook.language" name="language" required #language="ngModel">
+                  <option value="">Chọn ngôn ngữ</option>
+                  <option value="Tiếng Việt">Tiếng Việt</option>
+                  <option value="English">English</option>
+                </select>
+                <div *ngIf="language.invalid && language.touched" class="text-danger">
+                  Ngôn ngữ không được bỏ trống
+                </div>
+              </div>   
+              <div class="mb-3">
+                <label for="pagecount" class="form-label">Số trang</label>
+                <input type="number" class="form-control" id="pagecount" [(ngModel)]="newBook.pagecount"
+                  name="pagecount" placeholder="Số trang" required min="1" #pagecount="ngModel" />
+                <div *ngIf="pagecount.invalid && pagecount.touched" class="text-danger">
+                  Số trang không được nhỏ hơn 1
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="price" class="form-label">Giá</label>
+                <input type="number" class="form-control" id="price" [(ngModel)]="newBook.price" name="price"
+                  placeholder="Giá" required min="1" #price="ngModel" />
+                <div *ngIf="price.invalid && price.touched" class="text-danger">
+                  giá tiền không được nhỏ hơn 1
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="publish_date" class="form-label">Ngày xuất bản</label>
+                <input type="date" class="form-control" id="publish_date" [(ngModel)]="newBook.publish_date"
+                  name="publish_date" required #publish_date="ngModel" />
+                <div *ngIf="publish_date.invalid && publish_date.touched" class="text-danger">
+                  Ngày xuất bản không được bỏ trống
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="publisher" class="form-label">Nhà xuất bản</label>
+                <input type="text" class="form-control" id="publisher" [(ngModel)]="newBook.publisher" name="publisher"
+                  placeholder="Nhà xuất bản" required     pattern="^[a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỂỄỆỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]+$"
+                  #publisher="ngModel" />
+                  <div *ngIf="publisher.invalid && publisher.touched" class="text-danger">
+                    <div *ngIf="publisher.errors?.['required']">Nhà xuất bản không được bỏ trống</div>
+                    <div *ngIf="publisher.errors?.['pattern']">Nhà xuất bản được chứa ký tự đặc biệt</div>
+                  </div>
+              </div>
+              <div class="mb-3">
+                <label for="synopsis" class="form-label">Tóm tắt</label>
+                <input type="text" class="form-control" id="synopsis" [(ngModel)]="newBook.synopsis" name="synopsis"
+                  placeholder="Tóm tắt" required     pattern="^[a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỂỄỆỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]+$"
+                  #synopsis="ngModel" />
+                  <div *ngIf="synopsis.invalid && synopsis.touched" class="text-danger">
+                    <div *ngIf="synopsis.errors?.['required']">tóm tắt không được bỏ trống</div>
+                    <div *ngIf="synopsis.errors?.['pattern']">tóm tắt không được chứa ký tự đặc biệt</div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Thêm Sách</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Editing Book -->
+    <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5  class="modal-title" id="editBookModalLabel">Sửa Sách</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="updateBook()">
+              <div class="mb-3">
+                <label for="title" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="selectedBook.title" name="title" required pattern="^[a-zA-Z0-9\s]*$" />
+                <div *ngIf="!selectedBook.title" class="text-danger">
+                Tiêu đề không được bỏ trống
+              </div>
+              </div>
+              <div class="mb-3">
+                <label for="author" class="form-label">Tác giả</label>
+                <input type="text" class="form-control" id="author" [(ngModel)]="selectedBook.author" name="author" required />
+                <div *ngIf="!selectedBook.author" class="text-danger">Tác giả là bắt buộc</div>
+              </div>
+              <div class="mb-3">
+                <label for="genre" class="form-label">Thể loại</label>
+                <select class="form-control" id="genre" [(ngModel)]="selectedBook.genre" name="genre" required>
+                  <option value="">Chọn thể loại</option>
+                  <option value="Truyện Dài">Truyện Dài</option>
+                  <option value="Truyện Ngắn">Truyện Ngắn</option>
+                </select>
+                <div *ngIf="!selectedBook.genre" class="text-danger">Thể loại là bắt buộc</div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="language" class="form-label">Ngôn ngữ</label>
+                <select class="form-control" id="language" [(ngModel)]="selectedBook.language" name="language" required>
+                  <option value="">Chọn ngôn ngữ</option>
+                  <option value="Tiếng Việt">Tiếng Việt</option>
+                  <option value="English">English</option>
+                </select>
+                <div *ngIf="!selectedBook.language" class="text-danger">
+                  Ngôn ngữ là bắt buộc
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="pagecount" class="form-label">Số trang</label>
+                <input type="number" class="form-control" id="pagecount" [(ngModel)]="selectedBook.pagecount" name="pagecount" min="1" required/>
+                <div *ngIf="!selectedBook.pagecount" class="text-danger">Số trang là bắt buộc lớn hơn 1</div>
+      
+              </div>
+              <div class="mb-3">
+                <label for="price" class="form-label">Giá</label>
+                <input type="number" class="form-control" id="price" [(ngModel)]="selectedBook.price" name="price" min="1" required pattern="^\d+(\.\d+)?$"/>
+                <div *ngIf="!selectedBook.price" class="text-danger">Giá tiền là bắt buộc lớn hơn 1</div>
+              </div>
+              <div class="mb-3">
+                <label for="publish_date" class="form-label">Ngày xuất bản</label>
+                <input type="date" class="form-control" id="publish_date" [(ngModel)]="selectedBook.publish_date"  name="publish_date" required />
+              </div>
+              <div class="mb-3">
+                <label for="publisher" class="form-label">Nhà xuất bản</label>
+                <input type="text" class="form-control" id="publisher" [(ngModel)]="selectedBook.publisher" name="publisher"  required />
+                <div *ngIf="!selectedBook.publisher" class="text-danger">Nhà xuất bản là bắt buộc</div>
+              </div>
+              <div class="mb-3">
+                <label for="synopsis" class="form-label">Tóm tắt</label>
+                <input type="text" class="form-control" id="synopsis" [(ngModel)]="selectedBook.synopsis" name="synopsis"  required />
+                <div *ngIf="!selectedBook.synopsis" class="text-danger"> bắt buộc</div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Lưu Thay Đổi</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table displaying list of books -->
+    <hr />
+
+    <!-- Search Results Table -->
+    <h2>Search Results</h2>
+    <div *ngIf="books.length > 0">
+      <h3>Kết quả tìm kiếm (Tổng số: {{ totalItems }})</h3>
+      
+      <button type="button" *ngIf="add"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+        Thêm Sách
+      </button>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Language</th>
+            <th scope="col">Page Count</th>
+            <th scope="col">Price</th>
+            <th scope="col">Publish Date</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">Synopsis</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books; let i = index">
+            <th scope="row">{{ (searchRequest.pageNo - 1) * searchRequest.pageSize + i + 1 }}</th>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.genre }}</td>
+            <td>{{ book.language }}</td>
+            <td>{{ book.pagecount }}</td>
+            <td>{{ book.price }} VND</td>
+            <td>{{ book.publish_date | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ book.publisher }}</td>
+            <td>{{ book.synopsis }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" *ngIf="update"   (click)="openEditBookModal(book)">Edit</button>
+              
+              
+              <button class="btn btn-danger btn-sm" *ngIf="delete"  (click)="deleteBook(book.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <!-- Nút Previous -->
+          <li class="page-item" [class.disabled]="searchRequest.pageNo === 1">
+            <a class="page-link" (click)="onPageChange(searchRequest.pageNo - 1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <!-- Số Trang -->
+          <li class="page-item"
+            *ngFor="let page of [].constructor(Math.ceil(totalItems / searchRequest.pageSize)); let i = index"
+            [class.active]="searchRequest.pageNo === i + 1">
+            <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+          </li>
+
+          <!-- Nút Next -->
+          <li class="page-item"
+            [class.disabled]="searchRequest.pageNo === Math.ceil(totalItems / searchRequest.pageSize)">
+            <a class="page-link" (click)="onPageChange(searchRequest.pageNo + 1)" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>

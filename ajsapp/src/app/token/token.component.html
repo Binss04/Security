@@ -1,0 +1,118 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header  text-#0f0e0e d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Quản Lý Phân Quyền</h5>
+      
+      <button class="btn" style="background-color: black; color: white;" data-bs-toggle="modal" data-bs-target="#assignRoleModal">Thêm</button>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-bordered mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col" style="width: 20%;">Tài Khoản</th>
+            <th scope="col" style="width: 30%;">Chức Vụ</th>
+            <th scope="col">Quyền</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of usersWithRoles">
+            <td>{{ user.username }}</td>
+            <td>
+              <ul *ngFor="let role of user.roles">
+                {{ role.roleName }}
+              </ul>
+            </td>
+            <td>
+              <ul *ngFor="let role of user.roles">
+                <span *ngFor="let permission of role.permissions; let last = last">
+                  {{ permission }}<span *ngIf="!last">, </span>
+                </span>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="assignRoleModal" tabindex="-1" aria-labelledby="assignRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assignRoleModalLabel">Assign Role and Permissions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr class="row">
+              <th class="col">Role</th>
+              <th class="col">Permissions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row">
+              <td class="col">
+                <select class="form-select role-select" [(ngModel)]="selectedRoleName">
+                  <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+                </select>
+              </td>
+              
+              <td class="col">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle custom-dropdown-btn"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Permissions
+                  </button>
+                  <ul class="dropdown-menu permission-dropdown" aria-labelledby="dropdownMenuButton">
+                    <div *ngFor="let functionName of (functionPermissions | keyvalue)" class="function-group">
+                      <label class="function-checkbox">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="selectedFunctions[functionName.key]"
+                          (change)="toggleFunction(functionName.key)"
+                        />
+                        {{ functionName.key }}
+                      </label>
+              
+                      <div *ngIf="selectedFunctions[functionName.key]" class="permissions">
+                        <div *ngFor="let permission of functionName.value" class="permission-item">
+                          <label>
+                            <input
+                              type="checkbox"
+                              [(ngModel)]="selectedPermissions[permission]"
+                            />
+                            {{ permission }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </ul>
+                </div>
+              </td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" style="background-color: black; color: white;" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn" style="background-color: black; color: white;" (click)="submit()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+

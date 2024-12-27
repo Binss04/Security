@@ -1,0 +1,67 @@
+/* Cân chỉnh phần Role */
+.role-select {
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* Tạo khoảng cách và làm gọn dropdown */
+.custom-dropdown-btn {
+  width: 100%;
+  max-width: 150px;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+/* Dropdown Permission */
+.permission-dropdown {
+  padding: 10px;
+  max-width: 300px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.function-group {
+  margin-bottom: 10px;
+}
+
+.function-checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.permissions {
+  margin-left: 20px;
+}
+
+.permission-item label {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* Toàn bộ bảng cân đối */
+.col {
+  vertical-align: top;
+  text-align: center;
+}
+
+td.col {
+  padding: 10px;
+}
+
+.btn {
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0d0d0d;
+  color: white;
+}
