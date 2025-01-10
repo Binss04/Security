@@ -104,7 +104,4 @@ public class BookController {
         return roleService.getUsersWithRolesAndPermissions();
     }
 
-
-
-
 }

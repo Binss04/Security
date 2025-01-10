@@ -1,21 +1,23 @@
 package book.example.book.service;
 
 import book.example.book.enity.Role;
+import book.example.book.enity.User;
 import book.example.book.repository.RoleRepository;
+import book.example.book.repository.UserRepository;
 import book.example.book.request.UserRolePermissionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class RoleService {
     @Autowired
     private RoleRepository repo;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<UserRolePermissionDTO> getUsersWithRolesAndPermissions() {
         // Lấy kết quả thô từ query
@@ -56,6 +58,25 @@ public class RoleService {
     public List<Role> getAllRoles(){
         return (List<Role>) repo.findAll();
     }
+
+
+    //Sửa role
+   public User updateRoleByUsername(String username, String roleName){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username:" + username));
+        Role role = repo.findByName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role not found with name: " + roleName));
+
+       Set<Role> currentRoles = user.getRoles();
+       currentRoles.clear(); // Nếu bạn muốn thay thế toàn bộ roles
+       currentRoles.add(role);
+       user.setRoles(currentRoles);
+
+        return userRepository.save(user);
+   }
+
+
+
 
 
 }

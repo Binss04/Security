@@ -1,0 +1,49 @@
+/* Định dạng bảng */
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Làm đẹp cho dropdown */
+.form-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 25px; /* Bo góc */
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    appearance: none; /* Ẩn mũi tên mặc định (nếu cần) */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+
+/* Thêm mũi tên tùy chỉnh */
+.form-select::after {
+    content: "▼";
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Bo góc toàn bộ dropdown */
+.form-select option {
+    border-radius: 8px;
+    padding: 5px;
+}
+
+/* Màu sắc khi chọn */
+.form-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

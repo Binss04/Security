@@ -7,9 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Repository
 public interface RoleRepository extends CrudRepository<Role,Long> {
     Optional<Role> findByName(String name);
+
+
 
     @Query("SELECT u.username AS username, " +
             "       r.name AS roleName, " +
@@ -19,6 +23,9 @@ public interface RoleRepository extends CrudRepository<Role,Long> {
             "LEFT JOIN r.rolePermissions rp " +
             "LEFT JOIN rp.permission p")
     List<Object[]> findAllUsersWithRolesAndPermissions();
+
+   //Sửa role
+
 
 
 }

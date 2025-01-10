@@ -4,8 +4,13 @@ export interface Permission {
   }
   
   export interface UserWithRoles {
+    selectedRole: any;
+    
     map(arg0: (permission: any) => { name: any; isChecked: boolean; }): any;
     username: string; // Tên người dùng
     roles: Permission[]; // Danh sách Role và các Permission liên quan
+    
   }
+
+  
   

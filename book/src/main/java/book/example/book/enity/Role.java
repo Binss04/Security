@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,4 @@ public class Role {
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<RolePermission> rolePermissions;
-
-
 }

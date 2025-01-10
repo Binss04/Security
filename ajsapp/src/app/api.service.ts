@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Book } from './request/books.model';
 import { BookSearchRequest } from './request/book-search-request.model';
 import { UserWithRoles } from './request/role-permission';
+import { RolePermission, RolePermissionRequest } from './request/rolepermission.model';
 
 
 @Injectable({
@@ -21,6 +22,10 @@ export class ApiService {
   private roleUrl = 'http://localhost:8081/api/exception/all';
   private perUrl = 'http://localhost:8081/api/exception/allpermission';
   private functionUrl = 'http://localhost:8081/api/exception/getAll'; // Replace with your Spring Boot server URL
+  private addrolepermissionUrl = 'http://localhost:8081/api/exception/add'; 
+  private permissionRole = 'http://localhost:8081/api/exception/permissions';
+  private deletepermission = 'http://localhost:8081/api/exception/delete';
+  private updateuserwithrole = 'http://localhost:8081/api/exception/update-role';
 
 
 
@@ -89,6 +94,25 @@ updateBook(requestBody: { id: number; bookRequest: Book }): Observable<{ id: num
   getFunctionPermissions(): Observable<{ [key: string]: string[] }> {
     return this.http.get<{ [key: string]: string[] }>(this.functionUrl,{headers: this.getAuthHeaders1()});
   }
+
+
+  addRolePermissions(request: RolePermissionRequest): Observable<RolePermission[]> {
+    return this.http.post<RolePermission[]>(this.addrolepermissionUrl, request, { headers: this.getAuthHeaders1(),});
+}
+
+getPermissionsByRole(roleName: string): Observable<string[]> {
+  const request = { roleName };
+  return this.http.post<string[]>(this.permissionRole, request,{ headers: this.getAuthHeaders1(),});
+}
+deleteRolePermissions( request: RolePermissionRequest): Observable<void> {
+  return this.http.delete<void>(this.deletepermission, {
+    body: request,  // Dữ liệu body sẽ là request
+    headers: this.getAuthHeaders1()  // Thêm header nếu cần thiết
+  });
+}
+updateUserRole( data: { username: string, role: string } ): Observable<any> {
+  return this.http.put(this.updateuserwithrole, data,{ headers: this.getAuthHeaders1(),});
+}
 
 
 

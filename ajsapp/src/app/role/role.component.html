@@ -1,0 +1,36 @@
+<div class="container mt-5">
+    <h2 class="text-center">Quản lý Vai trò Người Dùng</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of usersWithRoles">
+                <td class="align-middle">{{ user.username }}</td>
+                <td class="d-flex align-items-center">
+                    <select 
+                        class="form-select me-2" 
+                        aria-label="Select role for user"
+                        [(ngModel)]="user.selectedRole">
+                        <option value="" disabled selected>Select a role</option>
+                        <option *ngFor="let role of roles" [value]="role">
+                            {{ role }}
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <button 
+                        class="btn btn-dark"
+                        (click)="updateUserRole(user)">
+                        Đổi Role
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
