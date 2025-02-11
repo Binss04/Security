@@ -26,6 +26,10 @@ public interface RoleRepository extends CrudRepository<Role,Long> {
 
    //Sửa role
 
+    boolean existsByName(String name);
+
+
+
 
 
 }

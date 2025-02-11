@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../api.service';
-import { UserWithRoles } from '../request/role-permission';
+import { Role, UserWithRoles } from '../request/role-permission';
+import $ from 'jquery';
+
 
 @Component({
   selector: 'app-role',
@@ -10,6 +12,10 @@ import { UserWithRoles } from '../request/role-permission';
 export class RoleComponent {
   roles: String[] = [];
   usersWithRoles: UserWithRoles[] = [];
+  isFormVisible: boolean = false;
+  roleName: string = '';
+  role: Role = { name: '' }; // Khởi tạo object Role
+  response: Role | null = null;
    
 
   constructor(private apiService: ApiService){}
@@ -42,7 +48,6 @@ export class RoleComponent {
         username: user.username,
         role: user.selectedRole
       };
-
       // Gọi API để cập nhật vai trò cho người dùng
       this.apiService.updateUserRole(updateRequest).subscribe(
         (response) => {
@@ -58,5 +63,27 @@ export class RoleComponent {
       alert('Vui lòng chọn role');
     }
   }
-  
+
+
+  onSubmit() {
+    this.apiService.addRole(this.role).subscribe({
+      next: (data) => {
+        console.log('Role added successfully:', data);
+        this.response = data;
+        alert('Thêm thành công')
+      },  
+      error: (error) => {
+        console.error('Error adding role:', error);
+        if (error.status === 400) {
+          alert(error.error); // Lấy thông báo lỗi từ backend
+        } else {
+          alert('Có lỗi xảy ra, vui lòng thử lại');
+        }
+      },
+    });
+  }
 }
+
+
+  
+

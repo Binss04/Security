@@ -9,11 +9,12 @@ import { TokenComponent } from './token/token.component';
 import { RoleComponent } from './role/role.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent,canActivate:[LoggedInGuard]},
+  { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'token', component: TokenComponent},
-  { path: 'home', component:  HomeComponent,canActivate: [AuthGuard]},
-  { path: 'role', component:  RoleComponent}
+  { path: 'token', component: TokenComponent,canActivate: [AuthGuard], },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard], },
+  { path: 'role', component: RoleComponent,canActivate: [AuthGuard],}
+  
 ];
 
 @NgModule({

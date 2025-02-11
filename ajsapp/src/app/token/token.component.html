@@ -1,24 +1,24 @@
 <div class="container mt-5">
   <div class="card">
     <div class="card-header  text-#0f0e0e d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Quản Lý Phân Quyền</h5>
+      <h5 class="mb-0"><i class="fa-solid fa-list-check"></i> Quản Lý Phân Quyền</h5>
       
       <div class="d-flex">
         <!-- Nút Thay Đổi Chức Vụ -->
-        <button class="btn" style="background-color: black; color: white;" [routerLink]="'/role'">Thay Đổi Chức Vụ</button>
+        <button class="btn" style="background-color: black; color: white;" [routerLink]="'/role'"><i class="fa-solid fa-shuffle"></i> Thay Đổi Chức Vụ</button>
         
         <!-- Nút Cập nhật quyền -->
         <button class="btn ms-2" style="background-color: black; color: white;" data-bs-toggle="modal"
-          data-bs-target="#assignRoleModal">Cập nhật quyền</button>
+          data-bs-target="#assignRoleModal"><i class="fa-regular fa-pen-to-square"></i> Thông tin role</button>
       </div>
     </div>
     <div class="card-body p-0">
       <table class="table table-bordered mb-0">
         <thead class="table-light">
           <tr>
-            <th scope="col" style="width: 20%;">Tài Khoản</th>
-            <th scope="col" style="width: 30%;">Chức Vụ</th>
-            <th scope="col">Quyền</th>
+            <th scope="col" style="width: 20%;"><i class="fa-solid fa-user"></i> Tài Khoản</th>
+            <th scope="col" style="width: 30%;"><i class="fa-solid fa-user-tag"></i> Chức Vụ</th>
+            <!-- <th scope="col"><i class="fa-solid fa-user-gear"></i>Chức Năng</th> -->
           </tr>
         </thead>
         <tbody>
@@ -29,13 +29,13 @@
                 {{ role.roleName }}
               </ul>
             </td>
-            <td>
+            <!-- <td>
               <ul *ngFor="let role of user.roles">
                 <span *ngFor="let permission of role.permissions; let last = last">
                   {{ permission }}<span *ngIf="!last">, </span>
                 </span>
               </ul>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -65,15 +65,12 @@
                   <option value="" disabled selected hidden>Lựa chọn role</option>
                   <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
                 </select>
-
-
-
               </td>
               <td class="col">
                 <div *ngFor="let functionName of (functionPermissions | keyvalue)" class="function-group">
                   <label class="function-checkbox">
                     <input type="checkbox" [(ngModel)]="selectedFunctions[functionName.key]"
-                      (change)="toggleFunction(functionName.key)" />
+                      (change)="onFunctionChange(functionName.key)" />
                     {{ functionName.key }}
                   </label>
 
@@ -96,7 +93,7 @@
         <button type="button" class="btn" style="background-color: black; color: white;"
           data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn" style="background-color: black; color: white;"
-          (click)="submit()">Submit</button>
+          (click)="submit()">Sửa</button>
       </div>
     </div>
   </div>

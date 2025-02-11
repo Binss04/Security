@@ -13,10 +13,7 @@
             <tr *ngFor="let user of usersWithRoles">
                 <td class="align-middle">{{ user.username }}</td>
                 <td class="d-flex align-items-center">
-                    <select 
-                        class="form-select me-2" 
-                        aria-label="Select role for user"
-                        [(ngModel)]="user.selectedRole">
+                    <select class="form-select me-2" aria-label="Select role for user" [(ngModel)]="user.selectedRole">
                         <option value="" disabled selected>Select a role</option>
                         <option *ngFor="let role of roles" [value]="role">
                             {{ role }}
@@ -24,13 +21,42 @@
                     </select>
                 </td>
                 <td>
-                    <button 
-                        class="btn btn-dark"
-                        (click)="updateUserRole(user)">
-                        Đổi Role
-                    </button>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-warning btn-sm" (click)="updateUserRole(user)">
+                            <i class="bi bi-arrow-repeat"></i> Đổi Role
+                        </button>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</div>
+    <!-- thêm role -->
+    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addRoleModal">
+        <i class="bi bi-plus-circle"></i> Thêm Role
+    </button>
+    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRoleModalLabel">Thêm Role</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addRoleForm">
+                        <div class="mb-3">
+                            <label for="roleName" class="form-label">Tên Role</label>
+                            <input type="text" class="form-control" id="roleName" [(ngModel)]="role.name"   name="roleName" required #roleName="ngModel">
+                            <div *ngIf="roleName.invalid && roleName.touched" class="text-danger">
+                                Tên Role không được để trống!
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" form="addRoleForm" class="btn btn-primary" (click)="onSubmit()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>

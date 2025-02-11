@@ -1,15 +1,13 @@
 package book.example.book.jwt;
 
+import book.example.book.enity.Function;
 import book.example.book.enity.Permission;
-import book.example.book.enity.Role;
-import book.example.book.enity.User;
+import book.example.book.repository.FunctionRepository;
 import book.example.book.repository.PermissionRepository;
-import book.example.book.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,21 +27,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final PermissionRepository permissionRepository;
+    private final FunctionRepository functionRepository;
     private Map<String, String> permissionMap;
 
+    private Map<String, String> functionMap;
+
     //Constructor
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, PermissionRepository permissionRepository) {
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, PermissionRepository permissionRepository, FunctionRepository functionRepository) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.permissionRepository = permissionRepository;
-
+        this.functionRepository = functionRepository;
     }
+
     private void loadPermissionsFromDB(String username){
         List<Permission> permissions = permissionRepository.findPermissionsByUsername(username);
         permissionMap = permissions.stream()
                 .collect(Collectors.toMap(
                         Permission::getEndpoint,
                         Permission::getName
+                ));
+
+    }
+
+    private void loadFunctionFromDB(String username){
+        List<Function> functions = functionRepository.findFunctionByUsername(username);
+        functionMap = functions.stream()
+                .collect(Collectors.toMap(
+                        Function::getUrl,
+                        Function::getName
                 ));
 
     }
@@ -65,6 +76,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
                     return;
                 }
+//                if (!hasFunction(request)) {
+//                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+//                    return;
+//                }
             }
             filterChain.doFilter(request, response);
         } catch (Exception ex) {
@@ -91,6 +106,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return  true;
     }
+// Kiểm tra quyền truy cập cua Function
+//    private boolean hasFunction(HttpServletRequest request) {
+//        String token = getTokenFromRequest(request);
+//        String username = jwtTokenProvider.getUsername(token);
+//        loadFunctionFromDB(username);
+//        String requestURI = request.getRequestURI();
+//        String requiredFuction = functionMap.get(requestURI);
+//        System.out.println(functionMap);
+//        System.out.println(requiredFuction);
+//        if (requiredFuction == null) {
+//            return false;
+//        }
+//        return  true;
+//    }
 
 
     // Extract the token

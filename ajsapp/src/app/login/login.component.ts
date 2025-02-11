@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { Route, Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { Route, Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router,private authService: AuthService) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -27,7 +28,8 @@ export class LoginComponent {
          
           const accessToken = response.accessToken;
           localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('username',username)
+          // localStorage.setItem('username',username)
+          this.authService.setUsername(username); // Cập nhật username
           this.router.navigate(['/home']);
         
         

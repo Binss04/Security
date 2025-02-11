@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
 import { TokenComponent } from './token/token.component';
 import { RoleComponent } from './role/role.component';
+import { AboutComponent } from './about/about.component';
 
 
 
@@ -25,6 +26,7 @@ import { RoleComponent } from './role/role.component';
     UsersComponent,
     TokenComponent,
     RoleComponent,
+    AboutComponent,
     
 
     

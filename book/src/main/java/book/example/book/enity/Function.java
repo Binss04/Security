@@ -3,7 +3,9 @@ package book.example.book.enity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,6 +21,13 @@ public class Function {
 
     @Column(nullable = false)
     private String url;
+
+
+    @OneToMany(mappedBy = "function", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FunctionPermission> functionPermissions;
+
+
+
 
 
 }

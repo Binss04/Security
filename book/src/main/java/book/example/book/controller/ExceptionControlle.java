@@ -1,22 +1,14 @@
 package book.example.book.controller;
 
-import book.example.book.enity.Permission;
-import book.example.book.enity.Role;
-import book.example.book.enity.RolePermission;
-import book.example.book.enity.User;
-import book.example.book.request.RolePermissionDeleteRequest;
-import book.example.book.request.RolePermissionRequestDTO;
-import book.example.book.request.UpdateRequest;
-import book.example.book.request.UpdateUserRoleRequest;
+import book.example.book.enity.*;
+import book.example.book.request.*;
 import book.example.book.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +27,15 @@ public class ExceptionControlle {
     private FunctionPermissionService functionService;
 
     @Autowired
+    private FunctionService funcService;
+
+    @Autowired
     private RolePermissionService rolePermissionService;
+
+    @Autowired
+    private RoleFunctionService roleFunctionService;
+
+    @Autowired UserService userService;
 
     @GetMapping("/all")
     public List<String> getAllRoles() {
@@ -57,52 +57,68 @@ public class ExceptionControlle {
         return functionService.getFunctionPermissions();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<List<RolePermission>> addRolePermissions(
-            @RequestBody RolePermissionRequestDTO requestDTO) {
-        try {
-            List<RolePermission> rolePermissions = rolePermissionService.addRolePermissions(
-                    requestDTO.getRoleName(),
-                    requestDTO.getPermissionNames()
-            );
-            return ResponseEntity.ok(rolePermissions);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // Trả về Bad Request nếu có lỗi
-        }
-    }
-
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<Void> deleteByRoleNameAndPermissionNames(@RequestBody RolePermissionDeleteRequest request) {
-//        rolePermissionService.deleteByRoleNameAndPermissionNames(request.getRoleName(), request.getPermissionNames());
-//        return ResponseEntity.noContent().build();
-//    }
-
-    @DeleteMapping("/delete")
-    public List<String> deleteRolePermissions(@RequestBody RolePermissionDeleteRequest request) {
-        try {
-            rolePermissionService.deleteRolePermissions(request.getRoleName(), request.getPermissionNames());
-            return request.getPermissionNames();
-        } catch (Exception e) {
-            throw new RuntimeException("Lỗi: " + e.getMessage());
-        }
-    }
-
-
     @PostMapping("/permissions")
     public ResponseEntity<List<String>> getPermissionsByRole(@RequestBody Map<String, String> request) {
         String roleName = request.get("roleName");
         if (roleName == null || roleName.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-
         List<String> permissions = rolePermissionService.getPermissionsByRole(roleName);
         return ResponseEntity.ok(permissions);
     }
 
-@PutMapping("/update-role")
-    public ResponseEntity<User> updateUserRole(@RequestBody UpdateUserRoleRequest request){
-        User updateUser = roleService.updateRoleByUsername(request.getUsername(), request.getRole() );
-                return ResponseEntity.ok(updateUser);
-}
+
+    @PostMapping("/role-function")
+    public ResponseEntity<List<String>> getFucntionsByRole(@RequestBody Map<String, String> request) {
+        String roleName = request.get("roleName");
+        if (roleName == null || roleName.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+        List<String> permissions = roleFunctionService.getFunctionsByRoleName(roleName);
+        return ResponseEntity.ok(permissions);
+    }
+
+
+//    @GetMapping("/names")
+//    public List<FunctionDTO> getAllFunctionNames() {
+//        return funcService.getAllFunctions();
+//    }
+
+//    @GetMapping("/all-role-function")
+//    public Map<String, List<String>> getAllRoleFunctions() {
+//        return roleFunctionService.getAllRoleFunctions();
+//    }
+
+
+    //lấy role, funciton theo username
+    @PostMapping("/roles-functions-permissions")
+    public Map<String,List<Map<String, String>>> getRolesFunctionsPermissions(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        return userService.getRolesFunctionsByUsername(username);
+    }
+
+    //thêm role-function
+    @PostMapping("/add-role-function")
+    public ResponseEntity<String> addFunctionsToRole(@RequestBody RoleFunctionRequest requestDTO) {
+        System.out.println("a");
+        String message = roleFunctionService.addFunctionRole(requestDTO.getRoleName(), requestDTO.getFunctionNames());
+        return ResponseEntity.ok(message);
+    }
+
+
+
+    //xóa role-function
+    @DeleteMapping("/delete-role-function")
+    public List<String> deleteRolePermissions(@RequestBody RoleFunctionRequest request) {
+        System.out.println("adddd");
+        try {
+            roleFunctionService.deleteRoleFunction(request.getRoleName(), request.getFunctionNames());
+            return request.getFunctionNames();
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi: " + e.getMessage());
+        }
+    }
+
+
 
 }

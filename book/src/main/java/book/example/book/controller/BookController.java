@@ -1,14 +1,11 @@
 package book.example.book.controller;
 
-import book.example.book.enity.Book;
-import book.example.book.enity.Permission;
-import book.example.book.enity.Role;
-import book.example.book.request.BookSearchRequest;
-import book.example.book.request.UpdateRequest;
-import book.example.book.request.UserRolePermissionDTO;
+import book.example.book.enity.*;
+import book.example.book.request.*;
 import book.example.book.service.BookService;
 
 import book.example.book.service.PermissionService;
+import book.example.book.service.RolePermissionService;
 import book.example.book.service.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +30,8 @@ public class BookController {
     @Autowired
     private RoleService roleService;
 
-
-
-
+    @Autowired
+    private RolePermissionService rolePermissionService;
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -54,16 +50,6 @@ public class BookController {
         System.out.println(books);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
-
-
-
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-//        System.out.println("ok");
-//        bookService.deleteBook(id);
-//        List<Book> books = bookService.getAllBooks();
-//            return ResponseEntity.ok(books);
-//        }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteBook(@RequestBody Map<String, Long> requestBody) {
@@ -102,6 +88,46 @@ public class BookController {
     @GetMapping("/roles-with-permissions")
     public List<UserRolePermissionDTO> getUsersWithRolesAndPermissions() {
         return roleService.getUsersWithRolesAndPermissions();
+    }
+   //thêm role
+    @PostMapping("/add-role")
+    public ResponseEntity<?>  addRole(@RequestBody Role role) {
+        try {
+            Role newrole = roleService.addRole(role);
+            return ResponseEntity.ok(newrole);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    //sửa role gán với user
+    @PutMapping("/update-role")
+    public ResponseEntity<User> updateUserRole(@RequestBody UpdateUserRoleRequest request){
+        User updateUser = roleService.updateRoleByUsername(request.getUsername(), request.getRole() );
+        return ResponseEntity.ok(updateUser);
+    }
+    //thêm permission
+    @PostMapping("/add")
+    public ResponseEntity<List<RolePermission>> addRolePermissions(
+            @RequestBody RolePermissionRequestDTO requestDTO) {
+        try {
+            List<RolePermission> rolePermissions = rolePermissionService.addRolePermissions(
+                    requestDTO.getRoleName(),
+                    requestDTO.getPermissionNames()
+            );
+            return ResponseEntity.ok(rolePermissions);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Trả về Bad Request nếu có lỗi
+        }
+    }
+   //xóa permission
+    @DeleteMapping("/delete-permission")
+    public List<String> deleteRolePermissions(@RequestBody RolePermissionDeleteRequest request) {
+        try {
+            rolePermissionService.deleteRolePermissions(request.getRoleName(), request.getPermissionNames());
+            return request.getPermissionNames();
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi: " + e.getMessage());
+        }
     }
 
 }

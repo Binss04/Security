@@ -11,6 +11,11 @@ export interface Permission {
     roles: Permission[]; // Danh sách Role và các Permission liên quan
     
   }
+  export interface Role {
+    id?: number; 
+    name: string;
+    
+  }
 
   
   

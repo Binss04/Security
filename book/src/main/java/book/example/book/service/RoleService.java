@@ -68,12 +68,23 @@ public class RoleService {
                 .orElseThrow(() -> new RuntimeException("Role not found with name: " + roleName));
 
        Set<Role> currentRoles = user.getRoles();
-       currentRoles.clear(); // Nếu bạn muốn thay thế toàn bộ roles
+       currentRoles.clear();
        currentRoles.add(role);
        user.setRoles(currentRoles);
 
         return userRepository.save(user);
    }
+
+    //thêm role
+    public Role addRole(Role role) {
+        if(role.getName() == null || role.getName().trim().isEmpty()){
+            throw new IllegalArgumentException("Tên role không được để trống");
+        }
+        if (repo.existsByName(role.getName())){
+            throw new IllegalArgumentException("bị trùng tên");
+        }
+        return repo.save(role);
+    }
 
 
 

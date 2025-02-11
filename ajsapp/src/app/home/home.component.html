@@ -1,39 +1,39 @@
 <div class="container">
   <div class="container mt-5">
-    <h1 class="text-center">Book Search</h1>
+    <h1 class="text-center"><i class="fa-solid fa-house"></i> Book Search</h1>
 
     <div class="container mt-5">
       <!-- Form tìm kiếm -->
       <form class="w-100">
         <div class="row g-3">
           <div class="col-md-4">
-            <label for="author" class="form-label">Author</label>
+            <label for="author" class="form-label"><i class="fa-solid fa-user-pen"></i> Author</label>
             <input type="text" class="form-control" [(ngModel)]="searchRequest.author" name="author"
               placeholder="Enter author" aria-label="Enter author" />
           </div>
           <div class="col-md-4">
-            <label for="genre" class="form-label">Genre</label>
+            <label for="genre" class="form-label"><i class="fa-solid fa-lightbulb"></i> Genre</label>
             <input type="text" class="form-control" [(ngModel)]="searchRequest.genre" name="genre"
               placeholder="Enter genre" aria-label="Enter genre" />
           </div>
           <div class="col-md-4">
-            <label for="language" class="form-label">Language</label>
+            <label for="language" class="form-label"><i class="fa-solid fa-language"></i> Language</label>
             <input type="text" class="form-control" [(ngModel)]="searchRequest.language" name="language"
               placeholder="Enter language" aria-label="Enter language" />
           </div>
           <div class="col-md-4">
-            <label for="startDate" class="form-label">Start Date</label>
+            <label for="startDate" class="form-label"><i class="fa-solid fa-calendar-days"></i> Start Date</label>
             <input type="date" class="form-control" [(ngModel)]="searchRequest.startDate" name="startDate"
               aria-label="Start date" />
           </div>
           <div class="col-md-4">
-            <label for="endDate" class="form-label">End Date</label>
+            <label for="endDate" class="form-label"><i class="fa-solid fa-calendar-days"></i> End Date</label>
             <input type="date" class="form-control" [(ngModel)]="searchRequest.endDate" name="endDate"
               aria-label="End date" />
           </div>
           <div class="col-md-5">
             
-            <button type="submit" *ngIf="search" class="btn btn-primary mt-3"  (click)="onSearchClick()">Search</button>
+            <button type="submit" *ngIf="search" class="btn btn-primary mt-3"  (click)="onSearchClick()"><i class="fa-solid fa-magnifying-glass"></i></button>
           </div>
         </div>
 
@@ -65,7 +65,7 @@
               <div class="mb-3">
                 <label for="author" class="form-label">Tác giả</label>
                 <input type="text" class="form-control" id="author" [(ngModel)]="newBook.author" name="author"
-                  placeholder="Tác giả" required     pattern="^[a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỂỄỆỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]+$"
+                  placeholder="Tác giả" required     pattern="^[a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềễềểỂỄỆỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]+$"
                   #author="ngModel" />
                   <div *ngIf="author.invalid && author.touched" class="text-danger">
                     <div *ngIf="author.errors?.['required']">Tác giả không được bỏ trống</div>
@@ -245,8 +245,7 @@
       <h3>Kết quả tìm kiếm (Tổng số: {{ totalItems }})</h3>
       
       <button type="button" *ngIf="add"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
-        Thêm Sách
-      </button>
+        <i class="fa-solid fa-plus"></i> Thêm Sách      </button>
       <table class="table">
         <thead class="thead-dark">
           <tr>
@@ -276,10 +275,10 @@
             <td>{{ book.publisher }}</td>
             <td>{{ book.synopsis }}</td>
             <td>
-              <button class="btn btn-warning btn-sm" *ngIf="update"   (click)="openEditBookModal(book)">Edit</button>
+              <button class="btn btn-warning btn-sm" *ngIf="update"   (click)="openEditBookModal(book)"><i class="fa-solid fa-pen-to-square"></i></button>
               
               
-              <button class="btn btn-danger btn-sm" *ngIf="delete"  (click)="deleteBook(book.id)">Delete</button>
+              <button class="btn btn-danger btn-sm" *ngIf="delete"  (click)="deleteBook(book.id)"><i class="fa-regular fa-square-minus"></i></button>
             </td>
           </tr>
         </tbody>
